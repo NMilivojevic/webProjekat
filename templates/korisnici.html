@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Studentska Evidencija</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('studenti') }}">Studenti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('predmeti') }}">Predmeti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ url_for('korisnici') }}">Korisnici</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <a href="{{ url_for('logout') }}" class="btn btn-dark">
+          <i class="fas fa-sign-out-alt fa-lg"></i>
+        </a>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="my-5 d-flex justify-content-end">
+    <a href="{{ url_for('korisnik_novi') }}" class="btn btn-primary" role="button">Dodaj korisnika</a>
+  </div>
+  <div class="">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Ime</th>
+          <th scope="col">Prezime</th>
+          <th scope="col">Email</th>
+          <th scope="col">Rola</th>
+          <th scope="col">Akcija</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle">
+        {% for korisnik in korisnici %}
+        <tr>
+          <td>{{ korisnik.ime }}</td>
+          <td>{{ korisnik.prezime}}</td>
+          <td>{{ korisnik.email }}</td>
+          <td>{{ korisnik.rola }}</td>
+          <td scrope="row" class="d-flex align-items-center">
+            <a href="{{ url_for('korisnik_izmena', id=korisnik.id) }}"" class="text-warning fs-5 me-2" role="button">
+              <i class="fas fa-edit"></i>
+            </a>
+            <form action="{{ url_for('korisnik_brisanje', id=korisnik.id) }}" method="POST">
+              <button class="btn btn-outline-danger">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

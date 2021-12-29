@@ -1,0 +1,65 @@
+Predavanje 7
+-Napravimo folder evidencija_studenata
+-Napravimo folder static unutar toga
+-Static > bootstrap, fontawesome, jquery
+-u root folderu napravimo app.py i to je startna tacka nase aplikacije
+-u templates pravimo base.html 
+-zatim korisnici.html napravimo 
+    -u a href = # za sada
+-zatim napravimo njenu rutu
+-login.html pravimo sledeci koji kao i korisnici nasledjuje base.html
+    -method je post naravno, a action je funkcija koju cu da pozovem i kasnije cemo je uneti
+-potom napravimo rutu za login 
+
+Kraj: imamo login i korisnici i rute u app.py
+
+Predavanje 8
+-Dugme Prijavi se u login kada kliknemo bi trebalo da pozove ono sto budemo stavili u action atributu i tu cemo staviti proveru kredencijala, to radimo na sledecem casu, za sada cemo staviti link PRIVREMENI LOGIN koji ce nas preko url_for odvesti do home page.
+-Novi korisnik html sada pravimo 
+-Zatim pravimo korisnik izmena koja je slicna kao korisnik novi 
+-Zastim ide kreiranje baze podataka
+-zatim povezivnje python i mysql baze
+    -mysql connector
+    -mysql baza
+    -napraviti konekcija objekat
+-Napraviti kursor objekat koji nam omogucava izvrsavanje upita ka bazi i fetchovanje podataka iz baze
+-U ruti korisnici pravimo upit za vracanje stanje tabele korisnici
+-zatim pravimo korisnik novi rutu 
+-u korisnik novi psotavljamo u formi action = {{url_for(korisnik_novi)}} posto smo napravili tu rutu pa ga shodno saljemo na tu rutu tj funkciju i sa method = post
+- u korisnik izmena stavljamo values da budu vec popunjene values preko url for 
+- dodajemo korisnik izmena rutu 
+- u krosinikci na izmena btn dodajemo a href url_for korisnik_izmena i da prosledimo id 
+- takodje stavljamo i selected da budu role samo ako su vec bile selektovane i to radimo preko jinja sintakse {% if korisnik.rola == "administrator" %} selected {% endif %}
+- ruta za brisanje korisnik_brisanje i to je to 
+
+Kraj: imamo crud za korisnike 
+
+Fali crud za studente, predmete, ocene
+
+rute
+/login [X]
+/logout
+/korisnici [X]
+/korisnik_novi [X]
+/korisnik_izmena/<id> [X]
+/korisnik_brisanje/<id> [X]
+/studenti [X]
+/student/<id> 
+/student_novi [X]
+/student_izmena/<id> [X]
+/student_brisanje/<id> [X]
+<student_id> kroz ovu rutu racunamo i novi prosek studenta, tako da je dodata jos jedna
+promenljivu
+/predmeti [X]
+/predmet_novi [X]
+/predmet_izmena/<id> [X]
+/predmet_brisanje/<id> [X]
+/ocena_nova/<id>
+/ocena_brisanje/<id>
+/ocena_izmena/<id>
+/ocena_brisanje/<id>/
+
+Domaci: 
+
+
+

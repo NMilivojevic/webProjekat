@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="my-5">
+    <h2>Izmena Korisnika</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-xs-12">
+      <form action="{{ url_for('korisnik_izmena', id=korisnik.id) }}" method="POST">
+        <div class="form-group">
+          <label for="ime">Ime</label>
+          <input type="text" name="ime" class="form-control" value={{ korisnik.ime }} required />
+        </div>
+        <div class="form-group my-2">
+          <label for="prezime">Prezime</label>
+          <input type="text" name="prezime" class="form-control" value={{ korisnik.prezime }} required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email adresa</label>
+          <input type="email" name="email" class="form-control" value={{ korisnik.email }} required />
+        </div>
+        <div class="form-group">
+          <label for="rola">Rola</label>
+          <select name="rola" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option selected disabled>Izaberite rolu</option>
+            <option value="administrator" {% if korisnik.rola=="administrator" %} selected {% endif %}>Administrator
+            </option>
+            <option value="profesor" {% if korisnik.rola=="profesor" %} selected {% endif %}>Profesor</option>
+            <option value="student" {% if korisnik.rola=="student" %} selected {% endif %}>Student</option>
+          </select>
+        </div>
+        <div class="form-group my-2">
+          <label for="lozinka">Lozinka</label>
+          <input type="password" name="lozinka" class="form-control" required />
+        </div>
+        <input type="submit" class="btn btn-primary" role="button" value="Sacuvaj" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

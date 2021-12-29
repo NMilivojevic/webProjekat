@@ -1,0 +1,59 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<div class="container">
+    <div class="d-flex justify-content-center my-1">
+       <h2>Novi Student</h2>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-lg-6 col-xs-12">
+            <form action="{{ url_for('student_novi') }}" method="POST">
+                <div class="form-group">
+                    <label for="ime">Ime</label>
+                    <input type="text" name="ime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="ime-roditelja">Ime jednog roditelja</label>
+                    <input type="text" name="ime-roditelja" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="prezime">Prezime</label>
+                    <input type="text" name="prezime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="broj-indeksa">Broj indeksa</label>
+                    <input type="text" name="broj-indeksa" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="godina-studija">Godina studija</label>
+                    <input type="text" name="godina-studija" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="jmbg">JMBG</label>
+                    <input type="text" name="jmbg" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="datum-rodjenja">Datum rodjenja</label>
+                    <input type="date" name="datum-rodjenja" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="espb">ESPB</label>
+                    <input type="text" name="espb" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="prosek">Prosek</label>
+                    <input type="text" name="prosek" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="broj-telefona">Broj telefona</label>
+                    <input type="text" name="broj-telefona" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <input type="submit" class="btn btn-primary mt-2" role="button" value="Sacuvaj">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

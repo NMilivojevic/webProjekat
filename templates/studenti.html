@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Studentska Evidencija</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{ url_for('studenti') }}">Studenti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('predmeti') }}">Predmeti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('korisnici') }}">Korisnici</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <a href="#" class="btn btn-dark">
+          <i class="fas fa-sign-out-alt fa-lg"></i>
+        </a>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="my-5 d-flex justify-content-end">
+    <a href="{{ url_for('student_novi') }}" class="btn btn-primary" role="button">Dodaj studenta</a>
+  </div>
+  <div class="">
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Ime</th>
+          <th scope="col">Ime roditelja</th>
+          <th scope="col">Prezime</th>
+          <th scope="col">Broj indeksa</th>
+          <th scope="col">Godina studija</th>
+          <th scope="col">JMBG</th>
+          <th scope="col">Datum rodjenja</th>
+          <th scope="col">ESPB</th>
+          <th scope="col">Prosek</th>
+          <th scope="col">Broj telefona</th>
+          <th scope="col">Email</th>
+          <th scope="col">Akcija</th>
+        </tr>
+      </thead>
+      <tbody class="align-middle">
+        {% for student in studenti %}
+        <tr>
+          <td>{{ student.ime }}</td>
+          <td>{{ student.ime_roditelja }}</td>
+          <td>{{ student.prezime }}</td>
+          <td>{{ student.broj_indeksa }}</td>
+          <td>{{ student.godina_studija }}</td>
+          <td>{{ student.jmbg }}</td>
+          <td>{{ student.datum_rodjenja }}</td>
+          <td>{{ student.espb }}</td>
+          <td>{{ student.prosek_ocena }}</td>
+          <td>{{ student.broj_telefona }}</td>
+          <td>{{ student.email }}</td>
+          <td scrope="row" class="d-flex align-items-center">
+            <a href="#" role="button" class="text-primary me-2">
+              <i class="fas fa-eye"></i>
+            </a>
+            <a href={{ url_for("student_izmena", id=student.id) }} role="button" class="text-warning me-2">
+              <i class="fas fa-edit"></i>
+            </a>
+            <form action={{ url_for("student_brisanje", id=student.id) }} method="POST" class="d-inline">
+              <button class="btn btn-outline-danger">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
