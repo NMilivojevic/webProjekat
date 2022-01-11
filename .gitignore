@@ -1,0 +1,8 @@
+*.egg
+*.egg-info/
+.cache/
+.pytest_cache/
+.idea/
+.vscode
+
+

@@ -11,15 +11,17 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ url_for('studenti') }}">Studenti</a>
         </li>
+        {% if (rola == 'administrator') %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('predmeti') }}">Predmeti</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('korisnici') }}">Korisnici</a>
         </li>
+        {% endif %}
       </ul>
       <form class="d-flex">
-        <a href="#" class="btn btn-dark">
+        <a href="{{ url_for('logout') }}" class="btn btn-dark">
           <i class="fas fa-sign-out-alt fa-lg"></i>
         </a>
       </form>
@@ -28,7 +30,9 @@
 </nav>
 <div class="container">
   <div class="my-5 d-flex justify-content-end">
+    {% if (rola == 'administrator') %}
     <a href="{{ url_for('student_novi') }}" class="btn btn-primary" role="button">Dodaj studenta</a>
+    {% endif %}
   </div>
   <div class="">
     <table class="table">
@@ -63,21 +67,57 @@
           <td>{{ student.broj_telefona }}</td>
           <td>{{ student.email }}</td>
           <td scrope="row" class="d-flex align-items-center">
-            <a href="#" role="button" class="text-primary me-2">
+            <a href="{{ url_for('student_pregled', id=student.id) }}" role="button" class="text-primary me-2">
               <i class="fas fa-eye"></i>
             </a>
-            <a href={{ url_for("student_izmena", id=student.id) }} role="button" class="text-warning me-2">
+            {% if (rola == 'administrator') %}
+            <a href="{{ url_for('student_izmena', id=student.id) }}" role="button" class="text-warning me-2">
               <i class="fas fa-edit"></i>
             </a>
-            <form action={{ url_for("student_brisanje", id=student.id) }} method="POST" class="d-inline">
-              <button class="btn btn-outline-danger">
-                <i class="fas fa-trash-alt"></i>
+            <form action="{{ url_for('student_brisanje', id=student.id) }}" method="POST" class="d-inline">
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                data-bs-target="#deletemodal{{student.id}}">
+                <i class="fas fa-trash-alt pe-none"></i>
               </button>
+              <!-- Modal -->
+              <div class="modal fade" id="deleteModal{{student.id}}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                      Da li ste sigurni da želite da obrišete studenta {{ student.ime }}
+                      {{ student.prezime }}?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
+                      <a href="{{ url_for('student_brisanje', id=student.id) }}" role="button"
+                        class="btn btn-danger">Obriši</a>
+                    </div>
+                  </div>
+                </div>>
+              </div>
             </form>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
       </tbody>
+      <!-- Modal tester -->
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Launch demo modal
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </table>
   </div>
 </div>

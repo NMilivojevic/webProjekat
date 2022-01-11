@@ -1,0 +1,150 @@
+{% extends 'base.html' %} {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Studentska Evidencija</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('studenti') }}">Studenti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('predmeti') }}">Predmeti</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('korisnici') }}">Korisnici</a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <a href="{{ url_for('logout') }}" class="btn btn-dark">
+          <i class="fas fa-sign-out-alt fa-lg"></i>
+        </a>
+      </form>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row mt-5">
+    <table class="col table">
+      <tbody class="align-middle">
+        <tr>
+          <th>Ime</th>
+          <td>Mark</td>
+        </tr>
+        <tr>
+          <th>Ime jednog roditelja</th>
+          <td>Jacob</td>
+        </tr>
+        <tr>
+          <th>Prezime</th>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th scope="row">Broj indeksa</th>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th>Godina Studija</th>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th>JMBG</th>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th>Datum Rodjenja</th>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <th>ESPB</th>
+          <td>333</td>
+        </tr>
+        <tr>
+          <th>Prosek Ocena</th>
+          <td>8.0</td>
+        </tr>
+        <tr>
+          <th>Broj Telefona</th>
+          <td>333</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>marko@3</td>
+        </tr>
+        <tr>
+          <th>Akcije</th>
+          <td>
+            <a href="{{ url_for('student_izmena', id=student.id) }}" role="button" class="text-warning me-2">
+              <i class="fas fa-edit"></i>
+            </a>
+            <form action="{{ url_for('student_brisanje', id=student.id) }}" method="POST" class="d-inline">
+              <button class="btn btn-outline-danger">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-6 ocene-section px-5">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Predmet</h6>
+          <select class="form-select mb-3" aria-label="Default select example">
+            <option selected disabled>Odaberi predmet</option>
+            <option value="elektrotehnika">Elektrotehnika</option>
+            <option value="matematika">Matematika</option>
+            <option value="fizika">Fizika</option>
+          </select>      
+          <h6 class="card-title">Ocena</h6>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control">
+          </div>  
+          <h6 class="card-title">Datum</h6>
+          <div class="input-group mb-3">
+            <input type="date" class="form-control">
+          </div>         
+          <a href="#" class="btn btn-primary d-block w-50 m-auto">Dodaj Ocenu</a>
+        </div>
+      </div>
+    </div>    
+  </div>
+  <table class="table mt-5 table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Šifra</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Godina Studija</th>
+        <th scope="col">Obavezni/Izborni</th>
+        <th scope="col">ESPB</th>
+        <th scope="col">Ocena</th>
+        <th scope="col">Akcije</th>
+      </tr>
+    </thead>
+    <tbody class="align-middle">
+      <tr>
+        <td>3</td>
+        <td>Matematika</td>
+        <td>2</td>
+        <td>Obavezni</td>
+        <td>88</td>
+        <td>10</td>
+        <td>
+          <a href="#" role="button" class="text-warning fs-5 me-2">
+            <i class="fas fa-edit"></i>
+          </a>
+          <form action="" method="POST" class="d-inline">
+            <button class="btn btn-outline-danger">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+</div>
+{% endblock %}

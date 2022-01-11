@@ -73,7 +73,7 @@ def studenti():
         upit = 'SELECT * FROM studenti'
         kursor.execute(upit)
         studenti = kursor.fetchall()
-        return render_template('studenti.html', studenti=studenti)
+        return render_template('studenti.html', studenti=studenti, rola=rola())
     else:
         return redirect(url_for("login"))
 
@@ -81,6 +81,8 @@ def studenti():
 @app.route('/student_novi', methods=['GET', 'POST'])
 def student_novi():
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         if request.method == 'GET':
             return render_template('student_novi.html')
         if request.method == 'POST':
@@ -113,6 +115,8 @@ def student_novi():
 @app.route('/student_izmena/<id>', methods=['GET', 'POST'])
 def student_izmena(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         if request.method == 'GET':
             upit = 'SELECT * FROM studenti WHERE id=%s'
             vrednost = (id,)
@@ -160,6 +164,8 @@ def student_izmena(id):
 @app.route('/student_brisanje/<id>', methods=['POST'])
 def student_brisanje(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         upit = """ DELETE FROM studenti WHERE id=%s
             """
         vrednost = (id,)
@@ -169,12 +175,20 @@ def student_brisanje(id):
     else:
         return redirect(url_for("login"))
 
-        # uzimamo podatke
+@app.route("/student_pregled/<id>", methods=["GET"])
+def student_pregled(id):
+    upit = "SELECT * FROM studenti WHERE id = %s"
+    vrednost=(id,)
+    kursor.execute(upit, vrednost)
+    student=kursor.fetchone()
+    return render_template("student_pregled.html", student=student)
 
 
 @app.route('/korisnici', methods=['GET'])
 def korisnici():
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         #if request.method == "GET":
         upit = 'SELECT * FROM korisnici'  # pravljenjje upita
 
@@ -200,7 +214,8 @@ def korisnici():
 @app.route('/korisnik_novi', methods=['GET', 'POST'])
 def korisnik_novi():
     if ulogovan():
-
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         # vracamo nas regularni templejt
 
         if request.method == 'GET':
@@ -246,6 +261,8 @@ def korisnik_novi():
 # kada se klikne na izmenu zelimo da se get pojavi forma, post da posalje na server podatke
 def korisnik_izmena(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))        
         if request.method == 'GET':
             # pravmo upit samo za taj kliknuti element
 
@@ -291,6 +308,8 @@ def korisnik_izmena(id):
 @app.route('/korisnik_brisanje/<id>', methods=['POST'])
 def korisnik_brisanje(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         upit = """ DELETE FROM korisnici WHERE id=%s
             """
         vrednost = (id,)
@@ -315,6 +334,8 @@ def predmeti():
 @app.route('/predmet_novi', methods=['GET', 'POST'])
 def predmet_novi():
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         if request.method == 'GET':
             return render_template('predmet_novi.html')
         if request.method == 'POST':
@@ -337,6 +358,8 @@ def predmet_novi():
 @app.route('/predmet_izmena/<id>', methods=['GET', 'POST'])
 def predmet_izmena(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         if request.method == 'GET':
             vrednost = (id,)
             upit = 'SELECT * FROM predmeti WHERE id=%s'
@@ -373,6 +396,8 @@ def predmet_izmena(id):
 @app.route('/predmet_brisanje/<id>', methods=['POST'])
 def predmet_brisanje(id):
     if ulogovan():
+        if rola() == "profesor":
+            return redirect(url_for("studenti"))
         upit = 'DELETE FROM predmeti WHERE id=%s'
         vrednost = (id,)
         kursor.execute(upit, vrednost)
