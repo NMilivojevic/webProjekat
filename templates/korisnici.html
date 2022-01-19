@@ -1,12 +1,12 @@
 {% extends 'base.html' %} {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Studentska Evidencija</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+    <a class="navbar-brand" href="{{ url_for('korisnici') }}">Studentska Evidencija</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('studenti') }}">Studenti</a>
@@ -18,7 +18,7 @@
           <a class="nav-link active" aria-current="page" href="{{ url_for('korisnici') }}">Korisnici</a>
         </li>
       </ul>
-      <form class="d-flex">
+      <form>
         <a href="{{ url_for('logout') }}" class="btn btn-dark">
           <i class="fas fa-sign-out-alt fa-lg"></i>
         </a>
@@ -28,7 +28,8 @@
 </nav>
 <div class="container">
   <div class="my-5 d-flex justify-content-end">
-    <a href="{{ url_for('korisnik_novi') }}" class="btn btn-primary" role="button">Dodaj korisnika</a>
+    <a href="{{ url_for('korisnik_novi') }}" class="btn btn-primary mr-3" role="button">Dodaj korisnika</a>
+    <a href="{{ url_for('export', tip='korisnici' ) }}" role="button" class="btn btn-success mr-3">Eksportuj podatke</a>
   </div>
   <div class="">
     <table class="table">
@@ -49,19 +50,50 @@
           <td>{{ korisnik.email }}</td>
           <td>{{ korisnik.rola }}</td>
           <td scrope="row" class="d-flex align-items-center">
-            <a href="{{ url_for('korisnik_izmena', id=korisnik.id) }}"" class="text-warning fs-5 me-2" role="button">
+            <a href="{{ url_for('korisnik_izmena', id=korisnik.id) }}" class=" text-warning fs-5 me-2" role="button">
               <i class="fas fa-edit"></i>
             </a>
-            <form action="{{ url_for('korisnik_brisanje', id=korisnik.id) }}" method="POST">
-              <button class="btn btn-outline-danger">
+            <form action="{{ url_for('korisnik_brisanje', id=korisnik.id) }}" method="POST" class="d-inline">
+              <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                data-target="#deleteModal{{korisnik.id}}">
                 <i class="fas fa-trash-alt"></i>
               </button>
             </form>
           </td>
         </tr>
+        <!-- Modal -->
+        <div class="modal" id="deleteModal{{korisnik.id}}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                Sigurno želite da obrišete korisnika {{ korisnik.ime }}
+                {{korisnik.prezime }}?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  Odustani
+                </button>
+                <a href="{{ url_for('korisnik_brisanje', id=korisnik.id) }}" role="button"
+                  class="btn btn-danger">Obriši</a>
+              </div>
+            </div>
+          </div>
+        </div>
         {% endfor %}
       </tbody>
     </table>
+    <nav>
+      <ul class="pagination justify-content-center mt-3">
+        <li class="page-item {% if strana=='1' %} disabled {% endif %}">
+          <a class="page-link" href="{{ prethodna_strana }}">Prethodna</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">{{
+            strana }}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="{{ sledeca_strana }}">Sledeca</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 {% endblock %}

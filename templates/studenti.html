@@ -1,24 +1,22 @@
 {% extends 'base.html' %} {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Studentska Evidencija</a>
+    <a class="navbar-brand" href="{{ url_for('studenti') }}">Studentska Evidencija</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ url_for('studenti') }}">Studenti</a>
         </li>
-        {% if (rola == 'administrator') %}
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('predmeti') }}">Predmeti</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('korisnici') }}">Korisnici</a>
         </li>
-        {% endif %}
       </ul>
       <form class="d-flex">
         <a href="{{ url_for('logout') }}" class="btn btn-dark">
@@ -30,95 +28,225 @@
 </nav>
 <div class="container">
   <div class="my-5 d-flex justify-content-end">
-    {% if (rola == 'administrator') %}
-    <a href="{{ url_for('student_novi') }}" class="btn btn-primary" role="button">Dodaj studenta</a>
-    {% endif %}
+    <a href="{{ url_for('student_novi') }}" class="btn btn-primary mr-3" role="button">Dodaj studenta</a>
+    <a href="{{ url_for('export', tip='studenti' ) }}" role="button" class="btn btn-success mr-3">Eksportuj podatke</a>
   </div>
   <div class="">
     <table class="table">
-      <thead class="table-dark">
-        <tr>
-          <th scope="col">Ime</th>
-          <th scope="col">Ime roditelja</th>
-          <th scope="col">Prezime</th>
-          <th scope="col">Broj indeksa</th>
-          <th scope="col">Godina studija</th>
-          <th scope="col">JMBG</th>
-          <th scope="col">Datum rodjenja</th>
-          <th scope="col">ESPB</th>
-          <th scope="col">Prosek</th>
-          <th scope="col">Broj telefona</th>
-          <th scope="col">Email</th>
-          <th scope="col">Akcija</th>
-        </tr>
-      </thead>
+      <form action="{{ url_for('studenti') }}" method="GET">
+        <thead>
+          <tr>
+            Filtriraj Pretragu
+          </tr>
+          <tr>
+            <th scope="col">
+              <div class="input-group input-group-sm">
+                <input value="{{ args.broj_indeksa }}" name="broj_indeksa" placeholder="Broj indeksa" type="text"
+                  class="form-control">
+              </div>
+            </th>
+            <th scope="col">
+              <div class="inline d-flex">
+                <div class="input-group input-group-sm mr-3">
+                  <input value="{{ args.ime }}" name="ime" placeholder="ime" type="text" class="form-control">
+                </div>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="inline d-flex">
+                <div class="input-group input-group-sm mr-3">
+                  <input value="{{ args.prezime }}" name="prezime" placeholder="prezime" type="text"
+                    class="form-control">
+                </div>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="input-group input-group-sm">
+                <select name="godina_studija" class="form-control">
+                  <option selected>Godina Studija</option>
+                  <option {%if args.godina_studija=='1' %}selected{% endif %} value="1">1</option>
+                  <option {%if args.godina_studija=='2' %}selected{% endif %} value="2">2</option>
+                  <option {%if args.godina_studija=='3' %}selected{% endif %} value="3">3</option>
+                </select>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="inline">
+                <div class="input-group input-group-sm mr-3">
+                  <input value="{{ args.prosek_ocena_od }}" name="prosek_ocena_od" placeholder="Od" type="text"
+                    class="form-control">
+                </div>
+                <div class="input-group input-group-sm">
+                  <input value="{{ args.prosek_ocena_do }}" name="prosek_ocena_do" placeholder="Do" type="text"
+                    class="form-control">
+                </div>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="inline">
+                <div class="input-group input-group-sm mr-3">
+                  <input value="{{ args.espb_od }}" name="espb_od" placeholder="Od" type="text" class="form-control">
+                </div>
+                <div class="input-group input-group-sm">
+                  <input value="{{ args.espb_do }}" name="espb_do" placeholder="Do" type="text" class="form-control">
+                </div>
+              </div>
+            </th>
+            <th scope="col">
+              <div class="inline-btns d-flex gap-1">
+                <button type="submit" class="btn btn-primary btn-sm mr-3">Pretraži</button>
+                <a role="button" class="btn btn-secondary btn-sm" href="{{ url_for('studenti') }}">Poništi</a>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <thead class="table-dark">
+          <tr>
+            <th scope="col" style="width: 150px;">
+              <label for="order_by_broj_indeksa" style="cursor: pointer;">
+                Broj indeksa
+                {% if order_type == 'asc' and args.order_by == 'broj_indeksa' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'broj_indeksa' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_broj_indeksa" value="broj_indeksa" type="submit"
+                name="order_by" />
+            </th>
+            <th scope="col">
+              <label for="order_by_ime" style="cursor: pointer;">
+                Ime
+                {% if order_type == 'asc' and args.order_by == 'ime' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'ime' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_ime" value="ime" type="submit" name="order_by" />
+            </th>
+            <th scope="col">
+              <label for="order_by_prezime" style="cursor: pointer;">
+                Prezime
+                {% if order_type == 'asc' and args.order_by == 'prezime' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'prezime' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_prezime" value="prezime" type="submit" name="order_by" />
+            </th>
+            <th scope="col">
+              <label for="order_by_godina_studija" style="cursor: pointer;">
+                Godina Studija
+                {% if order_type == 'asc' and args.order_by == 'godina_studija' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'godina_studija' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_godina_studija" value="godina_studija" type="submit"
+                name="order_by" />
+            </th>
+            <th class="col" style="width: 150px;">
+              <label for="order_by_prosek_ocena" style="cursor: pointer;">
+                Prosek ocena
+                {% if order_type == 'asc' and args.order_by == 'prosek_ocena' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'prosek_ocena' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_prosek_ocena" value="prosek_ocena" type="submit"
+                name="order_by" />
+            </th>
+            <th class="col" style="width: 150px;">
+              <label for="order_by_espb" style="cursor: pointer;">
+                ESPB
+                {% if order_type == 'asc' and args.order_by == 'espb' %}
+                <i class="fas fa-sort-up"></i>
+                {% elif order_type == 'desc' and args.order_by == 'espb' %}
+                <i class="fas fa-sort-down"></i>
+                {% else %}
+                <i class="fas fa-sort light-icon"></i>
+                {% endif %}
+              </label>
+              <input style="display: none;" id="order_by_espb" value="espb" type="submit" name="order_by" />
+            </th>
+            <th scope="col">Akcija</th>
+          </tr>
+        </thead>
+        <input name="prethodni_order_by" value="{{ args.order_by }}" hidden>
+        <input name="order_type" value="{{ order_type }}" hidden>
+        <input name="page" value="{{ strana }}" hidden>
+      </form>
       <tbody class="align-middle">
         {% for student in studenti %}
         <tr>
-          <td>{{ student.ime }}</td>
-          <td>{{ student.ime_roditelja }}</td>
-          <td>{{ student.prezime }}</td>
           <td>{{ student.broj_indeksa }}</td>
+          <td>{{ student.ime }}</td>
+          <td>{{ student.prezime }}</td>
           <td>{{ student.godina_studija }}</td>
-          <td>{{ student.jmbg }}</td>
-          <td>{{ student.datum_rodjenja }}</td>
-          <td>{{ student.espb }}</td>
           <td>{{ student.prosek_ocena }}</td>
-          <td>{{ student.broj_telefona }}</td>
-          <td>{{ student.email }}</td>
-          <td scrope="row" class="d-flex align-items-center">
-            <a href="{{ url_for('student_pregled', id=student.id) }}" role="button" class="text-primary me-2">
+          <td>{{ student.espb }}</td>
+          <td scope="row" class="d-flex align-items-center">
+            <a href="{{ url_for('student_pregled', id=student.id) }}" role="button" class="text-primary">
               <i class="fas fa-eye"></i>
             </a>
-            {% if (rola == 'administrator') %}
-            <a href="{{ url_for('student_izmena', id=student.id) }}" role="button" class="text-warning me-2">
+            <a href="{{ url_for('student_izmena', id=student.id) }}" role="button" class="text-warning">
               <i class="fas fa-edit"></i>
             </a>
             <form action="{{ url_for('student_brisanje', id=student.id) }}" method="POST" class="d-inline">
-              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                data-bs-target="#deletemodal{{student.id}}">
-                <i class="fas fa-trash-alt pe-none"></i>
+              <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                data-target="#deleteModal{{student.id}}">
+                <i class="fas fa-trash-alt"></i>
               </button>
-              <!-- Modal -->
-              <div class="modal fade" id="deleteModal{{student.id}}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-body">
-                      Da li ste sigurni da želite da obrišete studenta {{ student.ime }}
-                      {{ student.prezime }}?
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
-                      <a href="{{ url_for('student_brisanje', id=student.id) }}" role="button"
-                        class="btn btn-danger">Obriši</a>
-                    </div>
-                  </div>
-                </div>>
-              </div>
             </form>
-            {% endif %}
           </td>
         </tr>
-        {% endfor %}
-      </tbody>
-      <!-- Modal tester -->
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-      </button>
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- Modal -->
+        <div class="modal" id="deleteModal{{student.id}}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body">
+                Sigurno želite da obrišete studenta {{ student.ime }}
+                {{student.prezime }}?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                  Odustani
+                </button>
+                <a href="{{ url_for('student_brisanje', id=student.id) }}" role="button"
+                  class="btn btn-danger">Obriši</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+        {% endfor %}
+      </tbody>
     </table>
+    <nav>
+      <ul class="pagination justify-content-center mt-3">
+        <li class="page-item {% if strana=='1' %} disabled {% endif %}">
+          <a class="page-link" href="{{ prethodna_strana }}">Prethodna</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">{{
+            strana }}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="{{ sledeca_strana }}">Sledeca</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 {% endblock %}

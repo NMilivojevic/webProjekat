@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="my-5 d-flex justify-content-center">
+    <h2>Izmena Ocene</h2>
+  </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-lg-6 col-xs-12">
+      <form action="{{ url_for('ocena_izmena', id=ocena.id) }}" method="POST">
+        <div class="form-group">
+          <label for="sifra">Ocena</label>
+          <input type="number" name="ocena" class="form-control" min="6" max="10" value={{ ocena.ocena }} required />
+        </div>
+        <input type="submit" class="btn btn-primary" role="button" value="Sacuvaj" />
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
